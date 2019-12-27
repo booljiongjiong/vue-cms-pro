@@ -3,8 +3,7 @@
     <!-- 轮播图区域 -->
     <mt-swipe :auto="4000">
       <mt-swipe-item v-for="item in lunbotuList" :key="item.url">
-        没有借口，临时用顺序代替一下{{item}}
-        <img :src="item.img" alt />
+        <img :src='item.img_url' alt />
       </mt-swipe-item>
     </mt-swipe>
 
@@ -47,8 +46,6 @@
         </a>
       </li>
     </ul>
-
-    <h3>HomeCOntainer</h3>
   </div>
 </template>
 
@@ -58,7 +55,15 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
-      lunbotuList: []
+      lunbotuList: [
+        //注意！！！！！本地模拟数据时候，因为要放在v-for里面的img标签里面渲染，
+        //img标签的src属性做了v-bind绑定，所以必须使用require引入图片路径
+        {url:1,img_url:require('../../images/homeLunbotu/1.jpg')},
+        {url:2,img_url:require('../../images/homeLunbotu/2.jpg')},
+        {url:3,img_url:require('../../images/homeLunbotu/3.jpg')},
+        {url:4,img_url:require('../../images/homeLunbotu/4.jpg')},
+        {url:5,img_url:require('../../images/homeLunbotu/5.jpg')}
+      ]
     };
   },
   created() {

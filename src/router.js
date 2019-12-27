@@ -4,7 +4,9 @@ import HomeContainer from './components/tabbar/HomeContainer.vue'
 import MemberContainer from './components/tabbar/MemberContainer.vue'
 import ShopcarContainer from './components/tabbar/ShopcarContainer.vue'
 import SearchContainer from './components/tabbar/SearchContainer.vue'
-import NewsList from "./components/news/NewsList.vue";
+import NewsList from "./components/news/NewsList.vue"
+import NewsInfo from './components/news/NewsInfo.vue'
+
 
 
 // 3. 创建路由对象
@@ -15,7 +17,9 @@ var router = new VueRouter({
     { path: '/member', component: MemberContainer },
     { path: '/shopcar', component: ShopcarContainer },
     { path: '/search', component: SearchContainer },
-    { path: '/home/newslist', component: NewsList}
+    { path: '/home/newslist', component: NewsList},
+    // 这里面需要的参数id前面要加个: 代表传参，在路由界面想要获取这个id 可以使用$route.param.id获取
+    { path: '/home/newslist/:id', component: NewsInfo}
   ],
   linkActiveClass: 'mui-active'//覆盖默认的路由高亮的类router-lik-active
 })

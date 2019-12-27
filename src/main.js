@@ -2,9 +2,20 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+//导入格式化时间的插件
+import moment from 'moment'
+//定义全局的过滤器
+Vue.filter('dataFormate', function (dataStr, pattern = "YYYY_MM_DD HH:mm:ss") {
+  return moment(dataStr).format("pattern")
+})
+
+
 //导入 vue-resource
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
+
+//设置请求的路径
+Vue.http.options.root = 'http://vue.studyit.io'
 
 import './lib/mui/css/mui.css'
 import './lib/mui/css/icons-extra.css'
