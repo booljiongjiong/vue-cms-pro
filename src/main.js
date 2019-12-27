@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 //导入格式化时间的插件
 import moment from 'moment'
 //定义全局的过滤器
-Vue.filter('dataFormate', function (dataStr, pattern = "YYYY_MM_DD HH:mm:ss") {
+Vue.filter('dateFormate', function (dataStr, pattern = "YYYY_MM_DD HH:mm:ss") {
   return moment(dataStr).format("pattern")
 })
 
@@ -17,6 +17,9 @@ Vue.use(VueResource)
 //设置请求的路径
 Vue.http.options.root = 'http://vue.studyit.io'
 
+//全局设置post请求时候的表单数据格式
+Vue.http.options.emulateJSON = true;
+
 import './lib/mui/css/mui.css'
 import './lib/mui/css/icons-extra.css'
 
@@ -25,10 +28,11 @@ import router from './router.js'
 
 //导入app组件
 import app from './App.vue'
-import { Header, Swipe, SwipeItem } from 'mint-ui'
+import { Header, Swipe, SwipeItem, Button } from 'mint-ui'
 Vue.component(Header.name, Header)
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
+Vue.component(Button.name, Button)
 
 var vm = new Vue({
   el: '#app',

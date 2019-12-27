@@ -9,27 +9,34 @@
     <hr />
 
     <div class="content" v-html="newsInfo.content"></div>
+    <comment-box :id="this.id"></comment-box>
   </div>
 </template>
 
 <script>
+//导入评论子组件
+import comment from "../subcomponent/comment.vue";
+
 import { Toast } from "mint-ui";
 export default {
   data() {
     return {
       id: this.$route.params.id,
       newsInfo: {
-          id:1,
-          title:'新闻资讯1的title',
-          click:2,
-          add_time:'2019-12-27-17:03',
-          content:'<h4>新闻详情文本<i>新闻详情文本</i>新闻详情文本新闻详情文本新闻详情文本新闻详情文本新闻详情文本</h4>'
+        id: 1,
+        title: "新闻资讯1的title",
+        click: 2,
+        add_time: "2019-12-27-17:03",
+        content:
+          "<h5>新闻详情文本<i>新闻详情文本</i>新闻详情文本新闻详情文本新闻详情文本新闻详情文本新闻详情文本</h5><br/>"
       }
     };
   },
+
   created() {
-    this.getNewsInfo();
+    // this.getNewsInfo();//没有服务器数据 用的自己配置的data里面的数据
   },
+
   methods: {
     getNewsInfo() {
       this.$http.get("api/getnew/:" + this.id, rlt => {
@@ -40,6 +47,11 @@ export default {
         }
       });
     }
+  },
+
+  components: {
+    //用来注册子组件
+    "comment-box": comment
   }
 };
 </script>
@@ -48,7 +60,7 @@ export default {
 .newsinfo-container {
   padding: 0 4px;
   .title {
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
     margin: 15px 0;
     color: red;
@@ -58,8 +70,6 @@ export default {
     color: #226aff;
     display: flex;
     justify-content: space-between;
-  }
-  .content {
   }
 }
 </style>
