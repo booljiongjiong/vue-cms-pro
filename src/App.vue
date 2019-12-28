@@ -36,6 +36,9 @@
 </script>
 
 <style lang="scss" scope>
+.mint-header {
+  z-index: 99;
+}
 .app-container {
   padding-top: 40px;
   padding-bottom: 50px;
@@ -58,34 +61,35 @@
 }
 
 //注意！！！！！
-//修改类名 将原来的tab-item的样式复制到新类名里面 
+//修改类名 将原来的tab-item的样式复制到新类名里面
 //这样做是为了解决tab-item类名和mui.min.js里面的内容冲突导致tabbar无法切换
 .mui-bar-tab .mui-tab-item-llb.mui-active {
-    color: #007aff;
+  color: #007aff;
 }
 
 .mui-bar-tab .mui-tab-item-llb {
-    display: table-cell;
-    overflow: hidden;
-    width: 1%;
-    height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: #929292;
+  display: table-cell;
+  overflow: hidden;
+  width: 1%;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #929292;
 }
 .mui-bar-tab .mui-tab-item-llb .mui-icon {
-    top: 3px;
-    width: 24px;
-    height: 24px;
-    padding-top: 0;
-    padding-bottom: 0;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .mui-bar-tab .mui-tab-item-llb .mui-icon ~ .mui-tab-label {
-    font-size: 11px;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 11px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 </style>
