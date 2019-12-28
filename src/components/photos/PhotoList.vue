@@ -6,6 +6,7 @@
         class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted"
       >
         <div class="mui-scroll">
+          <!-- 注意！！！！！ 下面的绑定class的写法创建多类名 且可以使用三元表达式动态添加或者移除或者修改类名 -->
           <a
             :class="['mui-control-item',item.id===0?'mui-active':'']"
             href="#item5mobile"
