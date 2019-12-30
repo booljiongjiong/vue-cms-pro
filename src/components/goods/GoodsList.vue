@@ -1,7 +1,28 @@
 <template>
   <div>
     <div class="goods-list">
-      <div class="goods-item" v-for="(item,index) in goodsList" :key="index">
+      <!-- <router-link class="goods-item" v-for="(item,index) in goodsList" :key="index" :to='"/home/goodsinfo/"+index' tag='div'>
+        <img :src="item.img_url" />
+        <h1 class="title">{{item.title}}</h1>
+        <div class="info">
+          <p class="price">
+            <span class="now">￥{{item.now}}</span>
+            <span class="old">￥{{item.old}}</span>
+          </p>
+          <p class="sell">
+            <span>热卖中</span>
+            <span>剩余{{item.stock_quantity}}件</span>
+          </p>
+        </div>
+      </router-link>-->
+
+      <!-- 编程式导航 -->
+      <div
+        class="goods-item"
+        v-for="(item,index) in goodsList"
+        :key="index"
+        @click="gotoInfo(index)"
+      >
         <img :src="item.img_url" />
         <h1 class="title">{{item.title}}</h1>
         <div class="info">
@@ -67,12 +88,35 @@ export default {
       //     }
       //   });
       //没有服务器数据 使用data里面的数据配置模拟
-      this.goodsList = this.goodsList.concat(this.goodsList[0],this.goodsList[1],this.goodsList[2]);
+      this.goodsList = this.goodsList.concat(
+        this.goodsList[0],
+        this.goodsList[1],
+        this.goodsList[2]
+      );
     },
 
     getMore() {
       this.pageIndex++;
       this.getGoodsList();
+    },
+
+    gotoInfo(id) {
+      //使用js的形式進行路由导航
+      // console.dir(this)
+
+      //this.$route 是路由参数对象 所有路由中的参数 包括 params query等都属于他
+      //this.$router 是路由导航对象 用它可以方便的使用 js代码实现路由的前进 后退 跳转到新的URL地址
+
+      //使用this.$router.push前往某个页面,这个push方法在this.$router的原型对象上，在这个原型对象上还有例如go back forward等好用的方法
+
+      //1.最简单的路由导航
+      // this.$router.push("/home/goodsinfo/" + id);//等同于 :to='"/home/goodsinfo/"+item.id'
+      
+      // 2.传递一个对象的方法进行路由导航
+      // this.$router.push({path:'/home/goodsinfo/'+id});
+
+      // 3.使用命名路由和params传参的方式进行路由导航（使用命名路由进行路由导航 必须在路由规则里面给这个路由设置一个名字 就是设置一个name属性）
+      this.$router.push({name:'goodsinfo',params:{id}})
     }
   }
 };
