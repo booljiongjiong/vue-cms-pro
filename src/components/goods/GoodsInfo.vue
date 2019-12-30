@@ -42,8 +42,8 @@
         </div>
       </div>
       <div class="mui-card-footer">
-        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
-        <mt-button type="danger" size="large" plain>商品评论</mt-button>
+        <mt-button type="primary" size="large" plain @click="goDec(id)">图文介绍</mt-button>
+        <mt-button type="danger" size="large" plain @click="goComment(id)">商品评论</mt-button>
       </div>
     </div>
   </div>
@@ -94,13 +94,13 @@ export default {
 
     // this.getGoodsInfo();//没有服务器数据 用data里面的数据配置模拟
     this.goodsinfo = {
-      add_time:'2019-12-30 23:47',
-      goods_no:'348382949875',
-      id:88,
-      market_price:2699,
-      sell_price:2199,
-      stock_quantity:60,
-      title:'商品名称啊商品名称'
+      add_time: "2019-12-30 23:47",
+      goods_no: "348382949875",
+      id: 88,
+      market_price: 2699,
+      sell_price: 2199,
+      stock_quantity: 60,
+      title: "商品名称啊商品名称"
     };
   },
 
@@ -119,6 +119,15 @@ export default {
           this.goodsinfo = rlt.body.message[0];
         }
       });
+    },
+
+    goDec(id) {
+      //使用编程式导航跳转到图文介绍页面
+      this.$router.push('/home/goodsdec/'+id);
+    },
+    goComment(id) {
+      //使用编程式导航跳转到评论页面
+      this.$router.push({name:'goodscomment',params:{id}});
     }
   },
 
