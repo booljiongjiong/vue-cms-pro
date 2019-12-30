@@ -4,42 +4,66 @@
     <div class="mui-card">
       <div class="mui-card-content">
         <div class="mui-card-content-inner">
-          <swiper :lunbotuList='lunbotu' :isFull='false'></swiper>
+          <swiper :lunbotuList="lunbotu" :isFull="false"></swiper>
         </div>
       </div>
     </div>
 
     <!-- 商品购买区域 -->
     <div class="mui-card">
-      <div class="mui-card-header">页眉</div>
+      <div class="mui-card-header">商品名称</div>
       <div class="mui-card-content">
-        <div class="mui-card-content-inner">包含页眉页脚的卡片，页眉常用来显示面板标题，页脚用来显示额外信息或支持的操作（比如点赞、评论等）</div>
+        <div class="mui-card-content-inner">
+          <p class="price">
+            市场价：
+            <del>￥{{goodsinfo.market_price}}</del>&nbsp;&nbsp;销售价
+            <span class="now">￥{{goodsinfo.sell_price}}</span>
+          </p>
+          <p>
+            购买数量：
+            <goodsinfo_numbox></goodsinfo_numbox>
+          </p>
+          <p>
+            <mt-button type="primary" size="small">立即购买</mt-button>
+            <mt-button type="danger" size="small">加入购物车</mt-button>
+          </p>
+        </div>
       </div>
     </div>
 
     <!-- 商品参数区域 -->
     <div class="mui-card">
-      <div class="mui-card-header">页眉</div>
+      <div class="mui-card-header">{{goodsinfo.title}}</div>
       <div class="mui-card-content">
-        <div class="mui-card-content-inner">包含页眉页脚的卡片，页眉常用来显示面板标题，页脚用来显示额外信息或支持的操作（比如点赞、评论等）</div>
+        <div class="mui-card-content-inner">
+          <p>商品货号：{{goodsinfo.goods_no}}</p>
+          <p>库存情况：{{goodsinfo.stock_quantity}}</p>
+          <p>上架时间：{{goodsinfo.add_time}}</p>
+        </div>
       </div>
-      <div class="mui-card-footer">页脚</div>
+      <div class="mui-card-footer">
+        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
+        <mt-button type="danger" size="large" plain>商品评论</mt-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import swiper from '../subcomponent/swiper.vue'
+import swiper from "../subcomponent/swiper.vue";
+import goodsinfo_numbox from "../subcomponent/goodsinfo-numbox.vue";
 
 export default {
   data() {
     return {
       id: this.$route.params.id,
-      lunbotu: []
+      lunbotu: [],
+      goodsinfo: {}
     };
   },
+
   created() {
-    // this.getLunbotu();
+    // this.getLunbotu();//没有服务器数据 用data里面的数据配置模拟
     this.lunbotu = [
       {
         id: 1,
@@ -67,7 +91,19 @@ export default {
           "http://img4.imgtn.bdimg.com/it/u=4073455761,2994214211&fm=26&gp=0.jpg"
       }
     ];
+
+    // this.getGoodsInfo();//没有服务器数据 用data里面的数据配置模拟
+    this.goodsinfo = {
+      add_time:'2019-12-30 23:47',
+      goods_no:'348382949875',
+      id:88,
+      market_price:2699,
+      sell_price:2199,
+      stock_quantity:60,
+      title:'商品名称啊商品名称'
+    };
   },
+
   methods: {
     getLunbotu() {
       this.$http.get("api/getthumimages").then(rlt => {
@@ -75,11 +111,20 @@ export default {
           this.lunbotu = rlt.body.message;
         }
       });
+    },
+
+    getGoodsInfo() {
+      this.$http.get("api/goods/getinfo" + this.id).then(rlt => {
+        if (rlt.body.sttaus === 0) {
+          this.goodsinfo = rlt.body.message[0];
+        }
+      });
     }
   },
 
-  components:{
-    swiper
+  components: {
+    swiper,
+    goodsinfo_numbox
   }
 };
 </script>
@@ -88,5 +133,16 @@ export default {
 .goodsinfo-container {
   background-color: #ccc;
   overflow: hidden; /* 解决margin高度塌陷 */
+
+  .now {
+    color: red;
+  }
+}
+
+.mui-card-footer {
+  display: block;
+  button {
+    margin: 10px 0;
+  }
 }
 </style>
