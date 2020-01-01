@@ -1,5 +1,12 @@
 <template>
   <div class="goodsinfo-container">
+    <!-- <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="flag"></div>
+    </transition>-->
+    <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="flag"></div>
+    </transition>
+
     <!-- 商品轮播图区域 -->
     <div class="mui-card">
       <div class="mui-card-content">
@@ -25,7 +32,7 @@
           </p>
           <p>
             <mt-button type="primary" size="small">立即购买</mt-button>
-            <mt-button type="danger" size="small">加入购物车</mt-button>
+            <mt-button type="danger" size="small" @click="addToShopCar">加入购物车</mt-button>
           </p>
         </div>
       </div>
@@ -58,7 +65,8 @@ export default {
     return {
       id: this.$route.params.id,
       lunbotu: [],
-      goodsinfo: {}
+      goodsinfo: {},
+      flag: false
     };
   },
 
@@ -123,11 +131,32 @@ export default {
 
     goDec(id) {
       //使用编程式导航跳转到图文介绍页面
-      this.$router.push('/home/goodsdec/'+id);
+      this.$router.push("/home/goodsdec/" + id);
     },
     goComment(id) {
       //使用编程式导航跳转到评论页面
-      this.$router.push({name:'goodscomment',params:{id}});
+      this.$router.push({ name: "goodscomment", params: { id } });
+    },
+
+    addToShopCar() {
+      // 添加到购物车
+      this.flag = !this.flag;
+    },
+    beforeEnter(el) {
+      console.log('beforeEnter: '+el.style.transform)
+      el.style.transform = "translate(50px, 130px)";
+    },
+    enter(el, done) {
+      console.log('enter: '+el.style.transform)
+      el.offsetWidth;
+      el.style.transform = "translate(80px, 260px)";
+      el.style.transition = "translate 1s ease";
+
+      done();
+    },
+    afterEnter(el) {
+      this.flag = !this.flag; 
+      console.log('afterEnter: '+el.style.transform)
     }
   },
 
@@ -145,6 +174,17 @@ export default {
 
   .now {
     color: red;
+  }
+
+  .ball {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 99;
+    top: 365px;
+    left: 152px;
   }
 }
 

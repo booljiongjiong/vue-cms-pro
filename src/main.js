@@ -26,6 +26,21 @@ import './lib/mui/css/icons-extra.css'
 //导入自己的router.js路由模块
 import router from './router.js'
 
+
+import Vuex from 'vuex'
+Vue.use(Vuex)
+var store = new Vue.store({
+  state: {
+    count: 0
+  },
+  mutations: {
+
+  },
+  getters:{
+
+  }
+});
+
 //导入app组件
 import app from './App.vue'
 // import { Header, Swipe, SwipeItem, Button } from 'mint-ui'
@@ -41,13 +56,14 @@ Vue.use(MintUI)
 import 'mint-ui/lib/style.css'
 
 //安装图片预览插件
- import VuePreview from 'vue-preview'
- Vue.use(VuePreview)
+import VuePreview from 'vue-preview'
+Vue.use(VuePreview)
 
 var vm = new Vue({
   el: '#app',
   data: {},
   methods: {},
   router,
+  store,
   render: e => e(app)
 });
