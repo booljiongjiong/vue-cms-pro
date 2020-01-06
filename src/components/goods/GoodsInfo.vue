@@ -1,10 +1,7 @@
 <template>
   <div class="goodsinfo-container">
-    <!-- <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-      <div class="ball" v-show="flag"></div>
-    </transition>-->
     <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-      <div class="ball" v-show="flag"></div>
+      <div class="ball" v-show="flag" ref="ball"></div>
     </transition>
 
     <!-- 商品轮播图区域 -->
@@ -28,7 +25,7 @@
           </p>
           <p>
             购买数量：
-            <goodsinfo_numbox></goodsinfo_numbox>
+            <goodsinfo_numbox @getCount='getSelectedCount' :max='goodsinfo.stock_quantity?goodsinfo.stock_quantity:11'></goodsinfo_numbox>
           </p>
           <p>
             <mt-button type="primary" size="small">立即购买</mt-button>
@@ -107,7 +104,7 @@ export default {
       id: 88,
       market_price: 2699,
       sell_price: 2199,
-      stock_quantity: 60,
+      stock_quantity: 10,
       title: "商品名称啊商品名称"
     };
   },
@@ -141,22 +138,36 @@ export default {
     addToShopCar() {
       // 添加到购物车
       this.flag = !this.flag;
+
+      var goodsInfo = { id: this.id };
     },
     beforeEnter(el) {
-      console.log('beforeEnter: '+el.style.transform)
-      el.style.transform = "translate(50px, 130px)";
+      console.log("beforeEnter: " + el.style.transform);
+      el.style.transform = "translate(0, 0)";
     },
     enter(el, done) {
-      console.log('enter: '+el.style.transform)
+      console.log("enter: " + el.style.transform);
       el.offsetWidth;
-      el.style.transform = "translate(80px, 260px)";
+
+      const ballPos = this.$refs.ball.getBoundingClientRect();
+      const badgePos = document
+        .getElementById("mui-badge")
+        .getBoundingClientRect();
+      const xDis = badgePos.left - ballPos.left;
+      const yDix = badgePos.top - ballPos.top;
+
+      el.style.transform = `translate(${xDis}px, ${yDix}px)`;
       el.style.transition = "translate 1s ease";
 
       done();
     },
     afterEnter(el) {
-      this.flag = !this.flag; 
-      console.log('afterEnter: '+el.style.transform)
+      // this.flag = !this.flag;
+      console.log("afterEnter: " + el.style.transform);
+    },
+
+    getSelectedCount(count){
+        console.log('父组件拿到的是'+count);
     }
   },
 

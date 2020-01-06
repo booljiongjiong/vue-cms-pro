@@ -29,14 +29,14 @@ import router from './router.js'
 
 import Vuex from 'vuex'
 Vue.use(Vuex)
-var store = new Vue.store({
+var store = new Vuex.Store({
   state: {
-    count: 0
+    car: []
   },
   mutations: {
 
   },
-  getters:{
+  getters: {
 
   }
 });
