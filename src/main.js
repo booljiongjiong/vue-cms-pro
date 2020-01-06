@@ -31,13 +31,34 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 var store = new Vuex.Store({
   state: {
-    car: []
+    car: JSON.parse(localStorage.getItem('car') || '[]')//初始化的时候取localstore里面的数据 没有才给初始化成空数组
   },
   mutations: {
+    addToCar(state, obj) {
+      var hasFind = false;
+      state.car.some(item => {
+        if (item.id == obj.id) {
+          item.count += obj.count;
+          hasFind = true;
+          return true;
+        }
+      });
+      if (!hasFind) {
+        state.car.push(obj);
+      }
+
+      localStorage.setItem('car', JSON.stringify(state.car));
+    },
 
   },
   getters: {
-
+    getAllCount(state) {
+      var c = 0;
+      state.car.forEach(item => {
+        c += item.count;
+      });
+      return c;
+    }
   }
 });
 

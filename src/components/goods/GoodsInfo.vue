@@ -25,7 +25,10 @@
           </p>
           <p>
             购买数量：
-            <goodsinfo_numbox @getCount='getSelectedCount' :max='goodsinfo.stock_quantity?goodsinfo.stock_quantity:11'></goodsinfo_numbox>
+            <goodsinfo_numbox
+              @getCount="getSelectedCount"
+              :max="goodsinfo.stock_quantity?goodsinfo.stock_quantity:11"
+            ></goodsinfo_numbox>
           </p>
           <p>
             <mt-button type="primary" size="small">立即购买</mt-button>
@@ -63,7 +66,8 @@ export default {
       id: this.$route.params.id,
       lunbotu: [],
       goodsinfo: {},
-      flag: false
+      flag: false,
+      selectedCount: 1
     };
   },
 
@@ -139,14 +143,19 @@ export default {
       // 添加到购物车
       this.flag = !this.flag;
 
-      var goodsInfo = { id: this.id };
+      var goodsinfo_cust = {
+        id: this.id,
+        count: this.selectedCount,
+        price: this.goodsinfo.sell_price,
+        selected: true
+      };
+
+      this.$store.commit('addToCar',goodsinfo_cust)
     },
     beforeEnter(el) {
-      console.log("beforeEnter: " + el.style.transform);
       el.style.transform = "translate(0, 0)";
     },
     enter(el, done) {
-      console.log("enter: " + el.style.transform);
       el.offsetWidth;
 
       const ballPos = this.$refs.ball.getBoundingClientRect();
@@ -163,11 +172,10 @@ export default {
     },
     afterEnter(el) {
       // this.flag = !this.flag;
-      console.log("afterEnter: " + el.style.transform);
     },
 
-    getSelectedCount(count){
-        console.log('父组件拿到的是'+count);
+    getSelectedCount(count) {
+      this.selectedCount = count;
     }
   },
 
