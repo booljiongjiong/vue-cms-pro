@@ -1,18 +1,21 @@
 <template>
   <div class="shopcar-container">
     <div class="goods-list">
+
       <!-- 商品列表区 -->
-      <div class="mui-card">
+      <!-- <div class="mui-card" v-for="item in goodslist" :key="item.id" tag='div'> -->
+        <!-- 注意！！！！！因为购物车界面用的是配置数据 有可能配置的id对应的商品还没有点击过添加到购物车 所以这里要过滤一下 但是v-for跟v-if一般不建议在一起使用 所以借助computed属性过滤一下 -->
+      <div class="mui-card" v-for="(item,i) in getFilterArrCuzDataIsHandConfig()" :key="item.id" tag='div'>
         <div class="mui-card-content">
           <div class="mui-card-content-inner">
             <mt-switch></mt-switch>
-            <img src="https://avatars2.githubusercontent.com/u/27684744?s=40&v=4" alt />
+            <img :src="item.thumb_path"/>
             <div class="info">
-              <h1>购物车商品1</h1>
+              <h1>{{item.title}}</h1>
               <p>
-                <span class="price">$2199</span>
-                <shopcar_numbox></shopcar_numbox>
-                <a href>删除</a>
+                <span class="price">${{item.sell_price}}</span>
+                <numbox :initcount='$store.getters.getGoodsCount[item.id]' :goodsid='item.id'></numbox>
+                <a href='#' @click.prevent='remove(item.id,i)'>删除</a>
               </p>
             </div>
           </div>
@@ -26,18 +29,85 @@
         </div>
       </div>
     </div>
+    
   </div>
 </template>
 
 <script>
-import shopcar_numbox from "../subcomponent/shopcar_numbox.vue";
+import numbox from "../subcomponent/shopcar_numbox.vue";
 export default {
   data() {
-    return {};
+    return {
+      goodslist: []
+    };
   },
-  methods: {},
+
+  created() {
+    // this.getGoodsList();//没有服务器数据 使用data中的数据配置模拟
+    this.goodslist = [
+      {
+        cou: 1,
+        id: 0,
+        sell_price: 2999,
+        thumb_path:
+          "https://avatars2.githubusercontent.com/u/27684744?s=40&v=4",
+        title: "商品标题和简略介绍000000"
+      },
+      {
+        cou: 2,
+        id: 1,
+        sell_price: 3999,
+        thumb_path:
+          "https://icweiliimg9.pstatp.com/weili/l/259538946719219917.webp",
+        title: "商品标题和简略介绍1111111111"
+      },
+      {
+        cou: 1,
+        id: 2,
+        sell_price: 4999,
+        thumb_path:
+          "http://e.hiphotos.baidu.com/zhidao/pic/item/9d82d158ccbf6c81ec5127f8bc3eb13533fa40bf.jpg",
+        title: "商品标题和简略介绍2222222222"
+      }
+    ];
+  },
+
+  methods: {
+    getGoodsList() {
+      var idArr = [];
+      this.$store.state.car.forEach(item => {
+        idArr.push(item.id);
+      });
+      if (idArr.length <= 0) {
+        return;
+      }
+      this.$http.get("api/goods/getshopcarlist" + idArr.join(",")).then(rlt => {
+        if (rlt.body.status === 0) {
+          this.goodslist = rlt.body.message;
+        }
+      });
+    },
+
+    remove(id,i){
+      this.goodslist.splice(i,1);
+      this.$store.commit('removeFromCar',id);
+    }
+  },
   components: {
-    shopcar_numbox
+    numbox
+  },
+
+  computed: {
+    getFilterArrCuzDataIsHandConfig() {
+      //注意！！！！！这里返回的是一个函数 如果不返回函数 直接返回里面过滤出来的数组的话 会报错 找不到这个函数的
+      return () => {
+        var that = this;
+        var arr = that.goodslist.filter(
+          item => that.$store.getters.getGoodsCount[item.id] !== undefined //注意！！！！！1.时刻注意箭头函数里面的this的指向问题(箭头函数的this是定义时候就定下来的)！！！！ 2.undefined这里是要用来判断值用的 不要加引号变成字符串啊啊啊啊啊啊！！！
+        );
+        return arr;
+      };
+    }
   }
 };
 </script>
@@ -47,26 +117,26 @@ export default {
   background-color: #eee;
   overflow: hidden;
 
-  .goods-list{
-    .mui-card-content-inner{
+  .goods-list {
+    .mui-card-content-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    img{
+    img {
       width: 60px;
       height: 60px;
     }
 
-    h1{
+    h1 {
       font-size: 13px;
     }
 
-    .info{
+    .info {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      .price{
+      .price {
         color: red;
         font-weight: bold;
       }

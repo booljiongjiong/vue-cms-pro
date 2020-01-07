@@ -7,7 +7,8 @@
       @change="countChanged"
       ref="numbox"
       type="number"
-      value="1"
+      :value="initcount"
+      readonly
     />
     <button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
   </div>
@@ -20,12 +21,17 @@ export default {
     // 初始化数字选择框组件
     mui(".mui-numbox").numbox();
   },
-  
+
   methods: {
     countChanged() {
+      this.$store.commit("updateGoodsInfo", {
+        id: this.goodsid,
+        count: parseInt(this.$refs.numbox.value)
+      });
+    }
+  },
 
-    },
-  } 
+  props: ["initcount", "goodsid"]
 };
 </script>
 

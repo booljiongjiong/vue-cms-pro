@@ -50,6 +50,27 @@ var store = new Vuex.Store({// var store = new Vue.Store({//注意！！！！�
       localStorage.setItem('car', JSON.stringify(state.car));
     },
 
+    updateGoodsInfo(state, obj) {
+      //修改购物车商品数据
+      state.car.some(item => {
+        if (item.id == obj.id) {
+          item.count = obj.count;
+          return true;
+        }
+      });
+      localStorage.setItem('car', JSON.stringify(state.car));
+    },
+
+    removeFromCar(state, id) {
+      state.car.some((item, i) => {
+        if (item.id == id) {
+          state.car.splice(i, 1);
+          return true;
+        }
+      });
+      localStorage.setItem('car', state.car);
+    }
+
   },
   getters: {
     getAllCount(state) {
@@ -58,7 +79,16 @@ var store = new Vuex.Store({// var store = new Vue.Store({//注意！！！！�
         c += item.count;
       });
       return c;
-    }
+    },
+
+    getGoodsCount(state) {
+      var obj = {};
+      state.car.forEach(item => {
+        obj[item.id] = item.count;
+      })
+      return obj;
+    },
+
   }
 });
 
