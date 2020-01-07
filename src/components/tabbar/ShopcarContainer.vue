@@ -1,21 +1,27 @@
 <template>
   <div class="shopcar-container">
     <div class="goods-list">
-
       <!-- 商品列表区 -->
       <!-- <div class="mui-card" v-for="item in goodslist" :key="item.id" tag='div'> -->
-        <!-- 注意！！！！！因为购物车界面用的是配置数据 有可能配置的id对应的商品还没有点击过添加到购物车 所以这里要过滤一下 但是v-for跟v-if一般不建议在一起使用 所以借助computed属性过滤一下 -->
-      <div class="mui-card" v-for="(item,i) in getFilterArrCuzDataIsHandConfig()" :key="item.id" tag='div'>
+      <!-- 注意！！！！！因为购物车界面用的是配置数据 有可能配置的id对应的商品还没有点击过添加到购物车 所以这里要过滤一下 但是v-for跟v-if一般不建议在一起使用 所以借助computed属性过滤一下 -->
+      <div
+        class="mui-card"
+        v-for="(item,i) in getFilterArrCuzDataIsHandConfig()"
+        :key="item.id"
+        tag="div"
+      >
         <div class="mui-card-content">
           <div class="mui-card-content-inner">
-            <mt-switch></mt-switch>
-            <img :src="item.thumb_path"/>
+            <mt-switch
+              v-model="$store.getters.getGoodsSelected[item.id]"
+              @change="selectedChange(item.id,$store.getters.getGoodsSelected[item.id])"></mt-switch>
+            <img :src="item.thumb_path" />
             <div class="info">
               <h1>{{item.title}}</h1>
               <p>
                 <span class="price">${{item.sell_price}}</span>
-                <numbox :initcount='$store.getters.getGoodsCount[item.id]' :goodsid='item.id'></numbox>
-                <a href='#' @click.prevent='remove(item.id,i)'>删除</a>
+                <numbox :initcount="$store.getters.getGoodsCount[item.id]" :goodsid="item.id"></numbox>
+                <a href="#" @click.prevent="remove(item.id,i)">删除</a>
               </p>
             </div>
           </div>
@@ -29,7 +35,6 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -88,9 +93,13 @@ export default {
       });
     },
 
-    remove(id,i){
-      this.goodslist.splice(i,1);
-      this.$store.commit('removeFromCar',id);
+    remove(id, i) {
+      this.goodslist.splice(i, 1);
+      this.$store.commit("removeFromCar", id);
+    },
+
+    selectedChange(id,seletState){
+      this.$store.commit('selectedChange',{id,selected:seletState});
     }
   },
   components: {
