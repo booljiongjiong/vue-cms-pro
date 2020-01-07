@@ -25,7 +25,13 @@
       <!-- 商品结算区 -->
       <div class="mui-card">
         <div class="mui-card-content">
-          <div class="mui-card-content-inner">这是结算区</div>
+          <div class="mui-card-content-inner jiesuan">
+            <div class="left">
+              <p>总计（不含运费）</p>
+              <p>已勾选商品<span class="red">0</span>件，总价￥<span class="red">0</span>）</p>
+            </div>
+            <mt-button type='danger'>去结算</mt-button>
+          </div>
         </div>
       </div>
     </div>
@@ -140,6 +146,17 @@ export default {
         color: red;
         font-weight: bold;
       }
+    }
+  }
+
+  .jiesuan{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .red{
+      color: red;
+      font-weight: 700;
     }
   }
 }
