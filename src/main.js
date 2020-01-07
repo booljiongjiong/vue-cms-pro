@@ -71,16 +71,16 @@ var store = new Vuex.Store({// var store = new Vue.Store({//注意！！！！�
       localStorage.setItem('car', state.car);
     },
 
-    selectedChange(state,obj){
-      console.log(obj.id+"------"+obj.selected)
-      state.car.some(item=>{
-        if(item.id == obj.id){
+    selectedChange(state, obj) {
+      console.log(obj.id + "------" + obj.selected)
+      state.car.some(item => {
+        if (item.id == obj.id) {
           item.selected = obj.selected;
           return true;
         }
       });
       console.dir(state)
-      localStorage.setItem('car',JSON.stringify(state.car));
+      localStorage.setItem('car', JSON.stringify(state.car));
     }
 
   },
@@ -101,10 +101,21 @@ var store = new Vuex.Store({// var store = new Vue.Store({//注意！！！！�
       return obj;
     },
 
-    getGoodsSelected(state){
+    getGoodsSelected(state) {
       var o = {};
-      state.car.forEach(item=>{
+      state.car.forEach(item => {
         o[item.id] = item.selected;
+      });
+      return o;
+    },
+
+    getGoodsCountAndAmount(state) {
+      var o = { count: 0, amount: 0 };
+      state.car.forEach(item => {
+        if (item.selected) {
+          o.count += item.count;
+          o.amount += item.price * item.count;
+        }
       });
       return o;
     }
