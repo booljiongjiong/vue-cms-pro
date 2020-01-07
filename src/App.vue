@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 顶部 header 区域 -->
-    <mt-header fixed title="黑马程序员-vue项目"></mt-header>
+    <mt-header fixed title="vue商城项目"></mt-header>
 
     <!-- 中间的 路由router-view区域 -->
     <transition>

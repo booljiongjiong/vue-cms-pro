@@ -28,7 +28,7 @@
           </p>
           <p>
             购买数量：
-            <goodsinfo_numbox></goodsinfo_numbox>
+            <goodsinfo_numbox @selectedCountChangeFun='selectedCountChangeFun' :max='goodsinfo.stock_quantity'></goodsinfo_numbox>
           </p>
           <p>
             <mt-button type="primary" size="small">立即购买</mt-button>
@@ -66,7 +66,8 @@ export default {
       id: this.$route.params.id,
       lunbotu: [],
       goodsinfo: {},
-      flag: false
+      flag: false,
+      selectedCount: 1
     };
   },
 
@@ -141,13 +142,23 @@ export default {
     addToShopCar() {
       // 添加到购物车
       this.flag = !this.flag;
+
+      //拼接一个商品信息
+      var goodsInfo_cust = {
+        id:this.id,
+        count:this.selectedCount,
+        price:this.goodsinfo.sell_price,
+        selected:true
+      };
+      this.$store.commit('addToCar',goodsInfo_cust);
+      
     },
     beforeEnter(el) {
-      console.log('beforeEnter: '+el.style.transform)
+      console.log("beforeEnter: " + el.style.transform);
       el.style.transform = "translate(50px, 130px)";
     },
     enter(el, done) {
-      console.log('enter: '+el.style.transform)
+      console.log("enter: " + el.style.transform);
       el.offsetWidth;
       el.style.transform = "translate(80px, 260px)";
       el.style.transition = "translate 1s ease";
@@ -155,8 +166,12 @@ export default {
       done();
     },
     afterEnter(el) {
-      this.flag = !this.flag; 
-      console.log('afterEnter: '+el.style.transform)
+      this.flag = !this.flag;
+      console.log("afterEnter: " + el.style.transform);
+    },
+
+    selectedCountChangeFun(count) {
+      this.selectedCount = count;
     }
   },
 

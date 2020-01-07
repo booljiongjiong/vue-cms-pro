@@ -29,12 +29,25 @@ import router from './router.js'
 
 import Vuex from 'vuex'
 Vue.use(Vuex)
-var store = new Vue.store({
+var store = new Vuex.Store({
+// var store = new Vue.Store({//注意！！！！！ 实例化vuex的时候出现了两个问题 一个是Vuex.Store 不是Vue.Store, 第二个问题是Vuex.Store中的Store的S要大写。。。。。。。
   state: {
-    count: 0
+    car:[]
   },
   mutations: {
-
+    addToCar(state,infoObj){
+      var hasIdYet = false;
+      state.car.some(item=>{
+        if(item.id == infoObj.id){
+          item.count += infoObj.count;
+          hasIdYet = true;
+          return true;
+        }
+      });
+      if(!hasIdYet){
+        state.car.push(infoObj);//注意！！！！！用的是state.car 不是this.car
+      }
+    }
   },
   getters:{
 
