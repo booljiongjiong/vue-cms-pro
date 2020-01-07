@@ -29,28 +29,36 @@ import router from './router.js'
 
 import Vuex from 'vuex'
 Vue.use(Vuex)
-var store = new Vuex.Store({
-// var store = new Vue.Store({//注意！！！！！ 实例化vuex的时候出现了两个问题 一个是Vuex.Store 不是Vue.Store, 第二个问题是Vuex.Store中的Store的S要大写。。。。。。。
+var store = new Vuex.Store({// var store = new Vue.Store({//注意！！！！！ 实例化vuex的时候出现了两个问题 一个是Vuex.Store 不是Vue.Store, 第二个问题是Vuex.Store中的Store的S要大写。。。。。。。
   state: {
-    car:[]
+    car: JSON.parse(localStorage.getItem('car') || '[]')//初始化的时候取localstore里面的数据 没有才给初始化成空数组
   },
   mutations: {
-    addToCar(state,infoObj){
-      var hasIdYet = false;
-      state.car.some(item=>{
-        if(item.id == infoObj.id){
-          item.count += infoObj.count;
-          hasIdYet = true;
+    addToCar(state, obj) {
+      var hasFind = false;
+      state.car.some(item => {
+        if (item.id == obj.id) {
+          item.count += obj.count;
+          hasFind = true;
           return true;
         }
       });
-      if(!hasIdYet){
-        state.car.push(infoObj);//注意！！！！！用的是state.car 不是this.car
+      if (!hasFind) {
+        state.car.push(obj);//注意！！！！！用的是state.car 不是this.car
       }
-    }
-  },
-  getters:{
 
+      localStorage.setItem('car', JSON.stringify(state.car));
+    },
+
+  },
+  getters: {
+    getAllCount(state) {
+      var c = 0;
+      state.car.forEach(item => {
+        c += item.count;
+      });
+      return c;
+    }
   }
 });
 

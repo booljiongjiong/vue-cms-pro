@@ -1,10 +1,7 @@
 <template>
   <div class="goodsinfo-container">
-    <!-- <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-      <div class="ball" v-show="flag"></div>
-    </transition>-->
     <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-      <div class="ball" v-show="flag"></div>
+      <div class="ball" v-show="flag" ref="ball"></div>
     </transition>
 
     <!-- 商品轮播图区域 -->
@@ -58,7 +55,7 @@
 
 <script>
 import swiper from "../subcomponent/swiper.vue";
-import goodsinfo_numbox from "../subcomponent/goodsinfo-numbox.vue";
+import goodsinfo_numbox from "../subcomponent/goodsinfo_numbox.vue";
 
 export default {
   data() {
@@ -108,7 +105,7 @@ export default {
       id: 88,
       market_price: 2699,
       sell_price: 2199,
-      stock_quantity: 60,
+      stock_quantity: 10,
       title: "商品名称啊商品名称"
     };
   },
@@ -145,13 +142,12 @@ export default {
 
       //拼接一个商品信息
       var goodsInfo_cust = {
-        id:this.id,
-        count:this.selectedCount,
-        price:this.goodsinfo.sell_price,
-        selected:true
+        id: this.id,
+        count: this.selectedCount,
+        price: this.goodsinfo.sell_price,
+        selected: true
       };
-      this.$store.commit('addToCar',goodsInfo_cust);
-      
+      this.$store.commit("addToCar", goodsInfo_cust);
     },
     beforeEnter(el) {
       console.log("beforeEnter: " + el.style.transform);
@@ -160,7 +156,15 @@ export default {
     enter(el, done) {
       console.log("enter: " + el.style.transform);
       el.offsetWidth;
-      el.style.transform = "translate(80px, 260px)";
+
+      const ballPos = this.$refs.ball.getBoundingClientRect();
+      const badgePos = document
+        .getElementById("mui-badge")
+        .getBoundingClientRect();
+      const xDis = badgePos.left - ballPos.left;
+      const yDix = badgePos.top - ballPos.top;
+
+      el.style.transform = `translate(${xDis}px, ${yDix}px)`;
       el.style.transition = "translate 1s ease";
 
       done();

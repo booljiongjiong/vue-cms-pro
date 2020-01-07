@@ -70,7 +70,6 @@ export default {
     getLunbotu() {
       // this.$http.get("http://vue.studyit.io/api/getlunbo").then(result => {
       //   if (result.body.status === 0) {
-      //     console.log("createsdddddd111111");
       //     ths.lunbotuList = result.body.message;
       //   } else {
       //     Toast("获取轮播图失败");
