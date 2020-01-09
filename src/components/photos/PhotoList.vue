@@ -20,7 +20,7 @@
     </div>
     <!-- 图片列表区域 -->
     <ul class="photo-list">
-      <!-- 注意！！！！ ul里面的v-for渲染的li标签改成路由连接router-link时候 要使用tag指令手动修改渲染标签结果为li -->
+      <!-- 注意！！！！ ul里面的v-for渲染的li标签改成路由连接router-link时候 要使用tag指令手动修改渲染标签结果为li  不然的话样式可能会乱掉 -->
       <router-link v-for="item in list" :key="item.id" :to="'/home/photo/'+item.id" tag='li'>
         <img v-lazy="item.img_url" />
         <div class="info">
